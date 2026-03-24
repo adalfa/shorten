@@ -1,0 +1,62 @@
+<!--
+$(document).ready(function() {
+
+
+
+                 otable=$('#tUrl').dataTable( {
+                "bProcessing": true,
+                "bServerSide": true,
+                "sAjaxSource": "search.htm",
+                "bRetrieve": true,
+                "bInfo":true,
+                "bPaginate":true,
+                "bFilter":false,
+                "sScrollY": "250px",
+                "sPaginationType": "full_numbers",
+                "aoColumns": [
+                        { "mDataProp": "link" },
+
+                        { "mDataProp": "url" }
+                        
+                ],
+                "fnServerData": function ( sSource, aoData, fnCallback ) {
+                        /* Add some extra data to the sender */
+                         var sterm=$('[name=termine]').val();
+                var sdata="term="+sterm;
+                        //alert(sdata);
+                        //this.fnClearTable();
+                        if (sterm.length<1) return;
+                        aoData.push( { "name": "term", "value": sterm } );
+                        $.getJSON( sSource, aoData, function (json) {
+                                /* Do whatever additional processing you want on the callback, then tell DataTables */
+
+                                                                fnCallback(json)
+                        } );
+
+
+                        },
+                "fnDrawCallback": function ( oSettings ) {
+                                $('#example tbody tr').each( function () {
+                var iPos = otable.fnGetPosition( this );
+                $(this).click( function () {
+                    //oSettings.aoData[iPos]._aData[3].val()
+                    //alert(oSettings.aoData[iPos]._aData.messageId);
+                    var mid=oSettings.aoData[iPos]._aData.messageId;
+
+                 showmsg(mid);
+                } );
+                } );
+                }
+
+        } );
+
+}); 
+
+
+
+"aoColumns": [
+                        { "mDataProp": "id_link" },
+
+                        { "mDataProp": "url" }
+                        
+                ],

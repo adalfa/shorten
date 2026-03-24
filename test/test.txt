@@ -1,0 +1,1 @@
+google.visualization.Query.setResponse({version='0.6',status:'ok',table:{cols:[{id:'Col1',label:'ora',type:'string'},{id:'Col2',label:'accessi',type:'number'}],rows:[{c:[{v:0, f:'0'},{v:0,f:'0'}]}]}});

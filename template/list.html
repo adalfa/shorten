@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}   
+<table border="1">
+{% for url in urls %}
+<tr> 
+<td>{{ url.hash }}</td>
+<td>{{ url.url }} </td>
+</tr>
+{% endfor %}
+</table> 
+
+{% endblock content %}

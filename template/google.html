@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+   
+{% block content %}   
+<div id="error">
+Attenzione la url {{ msg  }} potrebbe essere condurre ad un sito con {{ status }} e le policy attuali non prevedono
+che tali siti potenzialmente malevoli possano essere inseriti.
+
+visita questo <a href="http://www.google.com/safebrowsing/diagnostic?site={{ msg }}"> link</a> per i dettagli sull'inclusione del sito <br>
+
+per maggiori informazioni su phishing visitare:<br>
+<a href="http://www.antiphishing.org/">antiphishing.org</a><br>
+per maggiori informazioni su malware visitare:<br>
+<a href="http://www.stopbadware.org/">stopbadware.org</a><br> 
+
+</div>
+{% endblock content %}
+{% block footer %} 
+
+"Advisory provided by Google," pleas visit this <a href="http://code.google.com/apis/safebrowsing/safebrowsing_faq.html#whyAdvisory">link</a> for info.
+<br>
+Google works to provide the most accurate and up-to-date phishing and malware information. However, it cannot guarantee that its information is comprehensive and error-free: some risky sites may not be identified, and some safe sites may be identified in error.
+{% endblock %}

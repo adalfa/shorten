@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+  {% block head %}
+  <head>
+    <title>shortener provided by {{ name }}</title>
+  </head>
+  {% endblock %}
+  <body>
+<div id="content">
+ {% block content %} {% endblock %}
+</div>
+<div id="footer">
+{% block footer %} 
+
+{% endblock %}
+</div>
+<!-- 
+{{ perf|e}}
+-->
+</body>
+</html>
+

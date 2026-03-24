@@ -1,0 +1,207 @@
+<html>
+  <head>
+    <script language="JavaScript" src="js/calendar_eu.js"></script>
+	<!--<script language="JavaScript" src="js/jquery.js"></script>
+	<script language="JavaScript" src="js/jquery.ui.core.js"></script>	-->
+
+<link rel="stylesheet" href="js/calendar.css">
+<LINK REL=StyleSheet HREF="css/demo_table.css"  TYPE="text/css" MEDIA=screen>
+	<!--Load the AJAX API-->
+   
+ 
+  </head>
+
+  <body>
+    <!--Div that will hold the pie chart-->
+<table width="80%" cellpadding="0" cellspacing="0" border="0" class="display" id="tUrl">
+        <thead>
+                <tr>
+
+                        <th width="5%">id_link</th>
+                        <th width="25%">url</th>
+                        
+                </tr>
+
+        </thead>
+        <tbody>
+                <tr>
+                        <td colspan="5" class="dataTables_empty">Loading data from server</td>
+                </tr>
+        </tbody>
+        </table>
+
+
+<table>    
+<tr>
+<td><div id="chart_div"></div></td>
+	<td><div id="geo_chart_div"></div></td>
+</tr>
+</table>  
+<select onchange="selectStat(this)" id="stat">
+  
+  <option value="D">Giornaliero</option>
+  <option value="M">Mensile</option>
+  <option value="Y">Annuale</option>
+
+  
+</select>
+<input type="text" name="hash" id="hash" onchange="drawGeo(this);selectStat(document.getElementById('stat'))" />
+<input type="text" readonly="true" name="date" id="data" onchange="alert('change');selectStat(document.getElementById('stat'))" />
+<script language="JavaScript">
+	new tcal ({
+		
+		'controlname': 'data',
+		'imgpath': 'img/'
+	});
+	</script>
+
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart','geochart']});
+       google.load("jquery", "1.6.2");
+	  google.load("jqueryui", "1.8.15");
+	
+
+      
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+      
+      // Callback that creates and populates a data table, 
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+ 
+     
+
+
+     function drawChart() {
+
+      // Create the data table.
+      // Set chart options
+      var options = {'title':'How Much Pizza I Ate Last Night',
+                     'width':600,
+                     'height':300};
+
+     var data = new google.visualization.DataTable();
+      data.addColumn('string', 'ora');
+      data.addColumn('number', 'accessi');
+
+	
+otable=$('#tUrl').dataTable( {
+                "bProcessing": true,
+                "bServerSide": true,
+                "sAjaxSource": "urllist.php",
+                "bRetrieve": true,
+                "bInfo":true,
+                "bPaginate":true,
+                "bFilter":false,
+                "sScrollY": "250px",
+                "sPaginationType": "full_numbers",
+                
+                "fnServerData": function ( sSource, aoData, fnCallback ) {
+                        /* Add some extra data to the sender */
+                      
+                        //aoData.push( { "name": "term", "value": sterm } );
+                        $.getJSON( sSource, aoData, function (json) {
+                                /* Do whatever additional processing you want on the callback, then tell DataTables */
+
+                                                                fnCallback(json)
+                        } );
+
+
+                        },
+                "fnDrawCallback": function ( oSettings ) {
+                                $('#example tbody tr').each( function () {
+                var iPos = otable.fnGetPosition( this );
+                $(this).click( function () {
+                    //oSettings.aoData[iPos]._aData[3].val()
+                    //alert(oSettings.aoData[iPos]._aData.messageId);
+                    var mid=oSettings.aoData[iPos]._aData.messageId;
+
+                 showmsg(mid);
+                } );
+                } );
+                }
+
+        } );
+	
+ 
+	 // Instantiate and draw our chart, passing in some options.
+      window.chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      window.geochart = new google.visualization.GeoChart(document.getElementById('geo_chart_div'));
+//	var geoqry=new google.visualization.Query('http://localhost/shortener/test/datatables.php?type=Country');
+ //geoqry.send(geodrawdynamic);	
+//window.chart.draw(data, options);
+    
+
+
+
+}
+   
+
+function drawGeo(o)
+{
+var geoqry=new google.visualization.Query('lib/datatables.php?type=Country&id='+o.value);
+geoqry.send(geodrawdynamic);	
+
+
+}
+
+function drawdynamic(o)
+{
+	if (o.isError()) { alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage()); return; }
+	var data=o.getDataTable();
+	var options = {'title':'How Much Pizza I Ate Last Night',
+                     'width':600,
+                     'height':300};
+	window.chart.draw(data,options);
+}
+
+function geodrawdynamic(o)
+{
+	if (o.isError()) { alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage()); return; }
+	var data=o.getDataTable();
+	var options = {'title':'distribuzione planetaria',
+                     'width':600,
+                     'height':300,
+			'region':150};
+	window.geochart.draw(data,options);
+}
+
+
+ function selectStat(o)
+{
+
+var data =new google.visualization.DataTable();
+var options = {'title':'How Much Pizza I Ate Last Night',
+                     'width':600,
+                     'height':300};
+
+var choice = o.options[o.selectedIndex].value;
+var draw=true;
+hash=document.getElementById("hash");
+id=(hash.value=='')?0:hash.value;
+if (choice=="D")
+{
+	type="Daily";
+}
+if (choice=="M")
+{
+	type="Monthly";
+}
+if (choice=="Y")
+{
+	type="Yearly";
+}
+ 
+//alert('http://localhost/shortener/test/datatables.php?type='+type+'&id='+id);
+data=(document.getElementById('data').value);
+var qry=new google.visualization.Query('lib/datatables.php?type='+type+'&id='+id+'&data='+data);
+ qry.send(drawdynamic);
+}
+
+</script>
+<script type="text/javascript" src="js/jquery.dataTables.min.js" /> 
+</body>
+</html>
