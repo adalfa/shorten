@@ -1,3 +1,4 @@
 config/safeapi.key
+config/admin.token
 *~
 .claude/

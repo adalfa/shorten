@@ -1,4 +1,9 @@
 <?php
+$_token = trim(file_get_contents(__DIR__ . '/../config/admin.token'));
+if (!isset($_GET['token']) || !hash_equals($_token, $_GET['token'])) {
+    http_response_code(403);
+    exit('Forbidden');
+}
 include_once 'stats.php';
 require 'Benchmark/Timer.php';
 

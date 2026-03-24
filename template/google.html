@@ -2,10 +2,10 @@
    
 {% block content %}   
 <div id="error">
-Attenzione la url {{ msg  }} potrebbe essere condurre ad un sito con {{ status }} e le policy attuali non prevedono
+Attenzione la url {{ msg|e }} potrebbe essere condurre ad un sito con {{ status|e }} e le policy attuali non prevedono
 che tali siti potenzialmente malevoli possano essere inseriti.
 
-visita questo <a href="http://www.google.com/safebrowsing/diagnostic?site={{ msg }}"> link</a> per i dettagli sull'inclusione del sito <br>
+visita questo <a href="http://www.google.com/safebrowsing/diagnostic?site={{ msg|url_encode }}"> link</a> per i dettagli sull'inclusione del sito <br>
 
 per maggiori informazioni su phishing visitare:<br>
 <a href="http://www.antiphishing.org/">antiphishing.org</a><br>
